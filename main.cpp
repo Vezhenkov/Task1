@@ -7,6 +7,8 @@ namespace bpo = boost::program_options;
 bpo::variables_map parse_program_arguments(int argc, char** argv);
 
 int main(int argc, char** argv) {
+    std::clog << "workflow test 1";
+
     bpo::variables_map vm = parse_program_arguments(argc, argv);
     std::clog << vm["file"].as<std::string>() << std::endl;
     std::clog << vm["time_start"].as<std::time_t>() << std::endl;
