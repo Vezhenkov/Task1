@@ -8,7 +8,7 @@ bpo::variables_map parse_program_arguments(int argc, char** argv);
 
 int main(int argc, char** argv) {
     bpo::variables_map vm = parse_program_arguments(argc, argv);
-    std::clog << "TLE File: " << vm["file"].as<std::string>() << std::endl;
+    std::clog << "TLE file: " << vm["file"].as<std::string>() << std::endl;
     std::clog << "Time start: " << vm["time_start"].as<std::time_t>() << std::endl;
     std::clog << "Time end: " << vm["time_end"].as<std::time_t>() << std::endl;
     std::clog << "Latitude: " << vm["latitude"].as<double>() << std::endl;
