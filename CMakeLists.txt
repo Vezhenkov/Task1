@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.5)
 project(Task1)
 
 find_package(Boost REQUIRED COMPONENTS program_options)
