@@ -4,7 +4,7 @@ project(Task1)
 set(CMAKE_CXX_STANDARD 17)
 add_executable(Task1 main.cpp)
 
-find_package(Boost "1.34" COMPONENTS program_options)
+find_package(Boost COMPONENTS program_options)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
