@@ -1,15 +1,9 @@
 cmake_minimum_required(VERSION 3.27)
 project(Task1)
 
-set(CMAKE_CXX_STANDARD 17)
+find_package(Boost REQUIRED COMPONENTS program_options)
+
 add_executable(Task1 main.cpp)
 
-find_package(Boost "1.34" COMPONENTS program_options)
-
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    link_directories(${Boost_LIBRARY_DIRS})
-    target_link_libraries(Task1 ${Boost_LIBRARIES})
-else(Boost_FOUND)
-    message("\nBoost not found\n")
-endif(Boost_FOUND)
+target_compile_features(Task1 PUBLIC cxx_std_17)
+target_link_libraries(Task1 Boost::headers Boost::program_options)
