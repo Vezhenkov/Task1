@@ -8,13 +8,13 @@ bpo::variables_map parse_program_arguments(int argc, char** argv);
 
 int main(int argc, char** argv) {
     bpo::variables_map vm = parse_program_arguments(argc, argv);
-    std::clog << vm["file"].as<std::string>() << std::endl;
-    std::clog << vm["time_start"].as<std::time_t>() << std::endl;
-    std::clog << vm["time_end"].as<std::time_t>() << std::endl;
-    std::clog << vm["latitude"].as<double>() << std::endl;
-    std::clog << vm["longitude"].as<double>() << std::endl;
-    std::clog << vm["height"].as<double>() << std::endl;
-    std::clog << vm["min_elevation"].as<double>() << std::endl;
+    std::clog << "TLE File: " << vm["file"].as<std::string>() << std::endl;
+    std::clog << "Time start: " << vm["time_start"].as<std::time_t>() << std::endl;
+    std::clog << "Time end: " << vm["time_end"].as<std::time_t>() << std::endl;
+    std::clog << "Latitude: " << vm["latitude"].as<double>() << std::endl;
+    std::clog << "Longitude: " << vm["longitude"].as<double>() << std::endl;
+    std::clog << "Height: " << vm["height"].as<double>() << std::endl;
+    std::clog << "Minimum elevation: " << vm["min_elevation"].as<double>() << std::endl;
 
     return 0;
 }
@@ -33,7 +33,7 @@ bpo::variables_map parse_program_arguments(int argc, char** argv) {
         ("latitude", bpo::value<double>()->default_value(0), "latitude")
         ("longitude", bpo::value<double>()->default_value(0), "longitude")
         ("height", bpo::value<double>()->default_value(0), "height")
-        ("min_elevation", bpo::value<double>()->default_value(0), "min_elevation");
+        ("min_elevation", bpo::value<double>()->default_value(0), "minimum elevation");
 
     bpo::options_description options;
     options.add(common_options).add(general_options);
