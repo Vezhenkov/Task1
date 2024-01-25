@@ -1,6 +1,7 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <chrono>
+#include <format>
 
 namespace bpo = boost::program_options;
 
@@ -8,13 +9,21 @@ bpo::variables_map parse_program_arguments(int argc, char** argv);
 
 int main(int argc, char** argv) {
     bpo::variables_map vm = parse_program_arguments(argc, argv);
-    std::clog << "TLE file: " << vm["file"].as<std::string>() << std::endl;
-    std::clog << "Time start: " << vm["time_start"].as<std::time_t>() << std::endl;
-    std::clog << "Time end: " << vm["time_end"].as<std::time_t>() << std::endl;
-    std::clog << "Latitude: " << vm["latitude"].as<double>() << std::endl;
-    std::clog << "Longitude: " << vm["longitude"].as<double>() << std::endl;
-    std::clog << "Height: " << vm["height"].as<double>() << std::endl;
-    std::clog << "Minimum elevation: " << vm["min_elevation"].as<double>() << std::endl;
+    const std::string file = vm["file"].as<std::string>();
+    const std::time_t time_start = vm["time_start"].as<std::time_t>();
+    const std::time_t time_end = vm["time_end"].as<std::time_t>();
+    const double latitude = vm["latitude"].as<double>();
+    const double longitude = vm["longitude"].as<double>();
+    const double height = vm["height"].as<double>();
+    const double min_elevation = vm["min_elevation"].as<double>();
+
+    if (vm.count("verbose")) {
+        std::clog << std::format("file: \"{}\"", file) << std::endl;
+        std::clog << std::format("time: {} - {}", time_start, time_end) << std::endl;
+        std::clog << std::format("coordinates: latitude = {}, longitude = {}, height = {}", latitude, longitude, height)
+                  << std::endl;
+        std::clog << std::format("minimum elevation: {}", min_elevation) << std::endl;
+    }
 
     return 0;
 }
@@ -22,6 +31,7 @@ int main(int argc, char** argv) {
 bpo::variables_map parse_program_arguments(int argc, char** argv) {
     bpo::options_description general_options("General options");
     general_options.add_options()
+        ("verbose,v", "verbose")
         ("help,h", "Show help");
 
     const time_t time_point = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
