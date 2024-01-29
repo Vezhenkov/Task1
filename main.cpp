@@ -1,11 +1,14 @@
 #include <iostream>
+#include <fstream>
 #include <boost/program_options.hpp>
 #include <chrono>
 #include <format>
+#include "sgpsdp/sgp4sdp4.h"
 
 namespace bpo = boost::program_options;
 
 bpo::variables_map parse_program_arguments(int argc, char** argv);
+sat_t* get_next_satellite(FILE* fp);
 
 int main(int argc, char** argv) {
     bpo::variables_map vm = parse_program_arguments(argc, argv);
@@ -23,6 +26,12 @@ int main(int argc, char** argv) {
         std::clog << std::format("coordinates: latitude = {}, longitude = {}, height = {}", latitude, longitude, height)
                   << std::endl;
         std::clog << std::format("minimum elevation: {}", min_elevation) << std::endl;
+    }
+
+    FILE* fp = fopen("globalstar.txt", "r");
+    while(sat_t* sat = get_next_satellite(fp)) {
+        SDP4(sat, (double) time_start);
+        Convert_Sat_State(&sat->pos, &sat->vel);
     }
 
     return 0;
@@ -61,4 +70,25 @@ bpo::variables_map parse_program_arguments(int argc, char** argv) {
     }
 
     return vm;
+}
+
+sat_t* get_next_satellite(FILE* fp) {
+    char            tle_str[3][80];
+    auto*           sat = new sat_t;
+
+    try {
+        if (fp != nullptr) {
+            for(int i = 0; i <= 2; i++) {
+                if (fgets(tle_str[i], 80, fp) == nullptr) {
+                    throw std::invalid_argument("Error reading TLE line");
+                }
+            }
+            if (Get_Next_Tle_Set(tle_str, &sat->tle) == 1) {
+                return sat;
+            }
+        }
+    } catch (std::invalid_argument const& ex) {}
+
+    delete sat;
+    return nullptr;
 }
